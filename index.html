@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OnlyMinds — Train Every Kind of Intelligence</title>
+<meta name="description" content="A free cognitive training ground covering every recognized form of intelligence.">
+<meta name="theme-color" content="#12141C">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12141C;
+    --surface:#1B1E2B;
+    --surface-2:#232739;
+    --line:#2E3345;
+    --text:#E8E6E1;
+    --muted:#9AA0B4;
+    --gold:#C9A227;
+    --gold-dim:#8C7420;
+    --sage:#5B8C7B;
+    --rose:#B0616F;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; overscroll-behavior:none;}
+  body{min-height:100vh; padding-bottom:env(safe-area-inset-bottom);}
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; margin:0;}
+  ::selection{background:var(--gold-dim); color:#fff;}
+  a{color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px 14px; position:sticky; top:0; z-index:10;
+    background:linear-gradient(180deg,var(--bg) 70%,transparent);
+  }
+  .brand{display:flex; align-items:center; gap:9px;}
+  .brand-mark{width:26px; height:26px; flex-shrink:0;}
+  .brand-name{font-family:'Fraunces',serif; font-size:19px; font-weight:600; letter-spacing:0.2px;}
+  .brand-name em{font-style:normal; color:var(--gold);}
+  .streak{
+    display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace;
+    font-size:13px; color:var(--gold); background:var(--surface); border:1px solid var(--line);
+    padding:6px 11px; border-radius:999px;
+  }
+
+  /* ---------- Screens ---------- */
+  .screen{display:none; padding:0 20px 40px; max-width:760px; margin:0 auto;}
+  .screen.active{display:block;}
+
+  /* ---------- Home hero / wheel ---------- */
+  .hero{padding:6px 0 22px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:1.6px; text-transform:uppercase;
+    color:var(--gold); margin-bottom:12px;
+  }
+  .hero h1{font-size:27px; line-height:1.22; max-width:440px;}
+  .hero p{color:var(--muted); font-size:14.5px; line-height:1.55; margin-top:10px; max-width:440px;}
+  .brand-line{
+    font-size:13.5px; font-weight:700; margin-top:20px; letter-spacing:0.2px;
+  }
+  .brand-line .g{color:var(--gold);}
+  .brand-line .s{color:var(--sage);}
+
+  /* ---------- Method (LSS) section ---------- */
+  .method{
+    margin-top:34px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 18px;
+  }
+  .method-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+  .method-head h2{font-size:16.5px;}
+  .method-head span{font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--gold); text-transform:uppercase; letter-spacing:1px; border:1px solid var(--gold-dim); padding:2px 7px; border-radius:999px;}
+  .method-sub{color:var(--muted); font-size:13px; line-height:1.55; margin-top:8px;}
+  .method-steps{margin-top:16px; display:flex; flex-direction:column; gap:0;}
+  .m-step{display:flex; gap:12px; padding:11px 0; border-top:1px solid var(--line);}
+  .m-step:first-child{border-top:none;}
+  .m-step-key{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold); width:70px; flex-shrink:0; padding-top:2px;}
+  .m-step-body b{font-size:13.5px; display:block;}
+  .m-step-body span{color:var(--muted); font-size:12.5px; line-height:1.5;}
+
+  /* ---------- Quotes ---------- */
+  .card-quote{
+    font-family:'Fraunces',serif; font-style:italic; font-size:12px; color:var(--muted);
+    border-left:2px solid var(--gold-dim); padding-left:9px; margin-top:2px; line-height:1.4;
+  }
+  .card-quote cite{font-style:normal; display:block; color:var(--gold); font-size:10.5px; margin-top:3px; font-family:'Inter';}
+  .result-quote{
+    margin-top:22px; font-family:'Fraunces',serif; font-style:italic; font-size:15px; line-height:1.5;
+    color:var(--text); max-width:360px; margin-left:auto; margin-right:auto;
+  }
+  .result-quote cite{display:block; font-style:normal; color:var(--gold); font-size:11.5px; margin-top:8px; text-transform:uppercase; letter-spacing:0.6px; font-family:'JetBrains Mono',monospace;}
+
+  .wheel-wrap{display:flex; justify-content:center; margin:22px 0 8px;}
+  #wheel{filter:drop-shadow(0 8px 24px rgba(201,162,39,0.08));}
+
+  .wheel-caption{text-align:center; color:var(--muted); font-size:12.5px; margin-bottom:26px;}
+  .wheel-caption .mono{color:var(--text);}
+
+  /* ---------- Section labels ---------- */
+  .section-label{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin:30px 0 14px;
+  }
+  .section-label h2{font-size:15px; text-transform:uppercase; letter-spacing:1.4px; color:var(--muted); font-family:'Inter'; font-weight:600;}
+
+  /* ---------- Module grid ---------- */
+  .grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  @media(min-width:560px){.grid{grid-template-columns:1fr 1fr;}}
+
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 16px 14px; display:flex; flex-direction:column; gap:8px;
+    transition:border-color .15s ease, transform .1s ease;
+  }
+  .card:active{transform:scale(0.98);}
+  .card-top{display:flex; align-items:center; justify-content:space-between;}
+  .card-icon{
+    width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-size:16px; background:var(--surface-2); border:1px solid var(--line);
+  }
+  .card-name{font-family:'Fraunces',serif; font-size:16.5px; font-weight:600; margin-top:2px;}
+  .card-tag{font-size:10.5px; color:var(--gold); text-transform:uppercase; letter-spacing:0.6px; margin-top:2px;}
+  .card-desc{color:var(--muted); font-size:12.8px; line-height:1.45; margin-top:2px;}
+  .card-foot{display:flex; align-items:center; justify-content:space-between; margin-top:6px;}
+  .card-progress{font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace;}
+  .belt-badge{
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    border:1px solid; border-radius:999px; padding:3px 9px; font-family:'JetBrains Mono',monospace;
+  }
+  .card-go{
+    font-size:12px; color:var(--bg); background:var(--gold); border:none; border-radius:8px;
+    padding:7px 12px; font-weight:600;
+  }
+  .bar{height:3px; background:var(--surface-2); border-radius:3px; overflow:hidden; margin-top:2px;}
+  .bar-fill{height:100%; border-radius:3px; transition:width .3s ease;}
+
+  /* ---------- Daily check-in ---------- */
+  .checkin-card{
+    margin-top:14px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px;
+  }
+  .checkin-label{font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--muted);}
+  .checkin-prompt{font-family:'Fraunces',serif; font-size:16px; margin-top:8px; line-height:1.4;}
+  .checkin-done{
+    display:flex; align-items:center; gap:10px; color:var(--sage); font-size:13.5px; font-weight:600;
+  }
+  .checkin-done .tick{
+    width:22px; height:22px; border-radius:50%; background:var(--sage); color:var(--bg);
+    display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;
+  }
+
+  /* ---------- Session note (results screen) ---------- */
+  .session-note{margin-top:20px; text-align:left;}
+  .session-note-label{font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--muted); margin-bottom:8px;}
+
+  /* ---------- Day tracker ---------- */
+  .day-card{
+    margin-top:22px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 18px 16px;
+  }
+  .day-top{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px;}
+  .day-label{font-family:'Fraunces',serif; font-size:17px;}
+  .day-label span{color:var(--gold);}
+  .day-sub{color:var(--muted); font-size:11.5px; font-family:'JetBrains Mono',monospace;}
+  .day-dots{display:grid; grid-template-columns:repeat(10,1fr); gap:5px; margin-top:14px;}
+  .day-dot{aspect-ratio:1; border-radius:4px; background:var(--surface-2); border:1px solid var(--line);}
+  .day-dot.filled{background:var(--gold); border-color:var(--gold);}
+  .day-dot.today{border-color:var(--sage); border-width:2px;}
+  .today-focus{margin-top:16px; padding-top:14px; border-top:1px solid var(--line);}
+  .today-focus-label{font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--muted); margin-bottom:9px;}
+  .focus-chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .focus-chip{
+    display:flex; align-items:center; gap:6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:999px; padding:7px 13px 7px 10px; font-size:12.5px; color:var(--text);
+  }
+  .focus-chip span.ic{font-size:13px;}
+  .fw-note{
+    margin-top:34px; padding:15px 16px; border:1px dashed var(--line); border-radius:var(--radius);
+    color:var(--muted); font-size:12.5px; line-height:1.6;
+  }
+  .fw-note b{color:var(--text);}
+
+  /* ---------- Exercise screen ---------- */
+  .ex-header{display:flex; align-items:center; gap:12px; padding-top:16px;}
+  .back-btn{
+    width:34px; height:34px; border-radius:9px; background:var(--surface); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; color:var(--text); font-size:16px;
+  }
+  .ex-title{font-family:'Fraunces',serif; font-size:19px;}
+  .ex-tag{font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.6px;}
+
+  .ex-body{margin-top:22px;}
+  .ex-progress{display:flex; gap:5px; margin-bottom:20px;}
+  .ex-progress span{flex:1; height:4px; border-radius:3px; background:var(--surface-2);}
+  .ex-progress span.done{background:var(--gold);}
+  .ex-progress span.now{background:var(--sage);}
+
+  .q-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 18px; margin-bottom:16px;
+  }
+  .q-text{font-family:'Fraunces',serif; font-size:19px; line-height:1.4; font-weight:500;}
+  .q-sub{color:var(--muted); font-size:12.5px; margin-top:8px;}
+
+  .opts{display:flex; flex-direction:column; gap:9px; margin-top:16px;}
+  .opt{
+    text-align:left; background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    padding:13px 15px; border-radius:10px; font-size:14.5px;
+  }
+  .opt.selected{border-color:var(--gold); background:rgba(201,162,39,0.1);}
+  .opt.correct{border-color:var(--sage); background:rgba(91,140,123,0.16);}
+  .opt.wrong{border-color:var(--rose); background:rgba(176,97,111,0.16);}
+
+  .num-input-row{display:flex; gap:10px; margin-top:16px;}
+  input[type=text],input[type=number],textarea{
+    width:100%; background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    border-radius:10px; padding:13px 14px; font-size:15px; font-family:'JetBrains Mono',monospace;
+  }
+  textarea{font-family:'Inter',sans-serif; min-height:120px; resize:vertical; line-height:1.5;}
+
+  .primary-btn{
+    background:var(--gold); color:var(--bg); border:none; border-radius:10px; padding:13px 18px;
+    font-weight:700; font-size:14.5px; width:100%; margin-top:14px;
+  }
+  .primary-btn:disabled{opacity:0.4;}
+  .ghost-btn{
+    background:transparent; color:var(--muted); border:1px solid var(--line); border-radius:10px;
+    padding:11px 16px; font-size:13px; width:100%; margin-top:8px;
+  }
+
+  /* rhythm pads */
+  .pads{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px;}
+  .pad{
+    height:82px; border-radius:12px; border:1px solid var(--line); opacity:0.55;
+    display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+  }
+  .pad[data-p="0"]{background:#3A2E5C;}
+  .pad[data-p="1"]{background:#2E5C48;}
+  .pad[data-p="2"]{background:#5C3A2E;}
+  .pad[data-p="3"]{background:#5C2E4A;}
+  .pad.lit{opacity:1; transform:scale(0.97);}
+
+  /* reaction */
+  .rx-zone{
+    height:220px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    position:relative; margin-top:16px; overflow:hidden;
+  }
+  .rx-target{
+    position:absolute; width:52px; height:52px; border-radius:50%; background:var(--gold);
+  }
+  .rx-msg{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:13px; text-align:center; padding:0 20px;}
+
+  /* divergent */
+  .timer-badge{
+    font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--gold); text-align:center; margin-top:6px;
+  }
+  .entry-list{margin-top:14px; display:flex; flex-direction:column; gap:6px; max-height:180px; overflow-y:auto;}
+  .entry{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font-size:13.5px;}
+
+  /* results */
+  .result-box{text-align:center; padding:30px 18px;}
+  .result-score{font-family:'Fraunces',serif; font-size:44px; color:var(--gold); margin-top:8px;}
+  .result-label{color:var(--muted); font-size:13px; margin-top:4px;}
+  .result-msg{margin-top:16px; font-size:14px; line-height:1.6; color:var(--text); max-width:380px; margin-left:auto; margin-right:auto;}
+
+  .hidden{display:none !important;}
+
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--line); border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="15" stroke="#C9A227" stroke-width="1.4"/>
+      <circle cx="16" cy="16" r="4.2" fill="#C9A227"/>
+      <circle cx="16" cy="4.5" r="2" fill="#5B8C7B"/>
+      <circle cx="27.5" cy="16" r="2" fill="#5B8C7B"/>
+      <circle cx="16" cy="27.5" r="2" fill="#5B8C7B"/>
+      <circle cx="4.5" cy="16" r="2" fill="#5B8C7B"/>
+    </svg>
+    <div class="brand-name">Only<em>Minds</em></div>
+  </div>
+  <div class="streak" id="streakBadge">🔥 0 day streak</div>
+</div>
+
+<!-- ============ HOME SCREEN ============ -->
+<main class="screen active" id="home">
+  <section class="hero">
+    <div class="eyebrow">IQ measures one kind of smart.</div>
+    <h1>There are nine more you've never trained.</h1>
+    <p>Thirteen free modules. Every recognized model of human intelligence, drilled with the same discipline that fixes broken production lines — not random brain games with a streak counter.</p>
+    <div class="brand-line"><span class="g">Measured.</span> <span class="s">Not guessed.</span> Free, permanently.</div>
+  </section>
+
+  <div class="day-card">
+    <div class="day-top">
+      <div class="day-label">Day <span id="dayNum">1</span> of 30</div>
+      <div class="day-sub" id="dayCaption">21 days builds a habit. 30 locks it in.</div>
+    </div>
+    <div class="day-dots" id="dayDots"></div>
+    <div class="today-focus">
+      <div class="today-focus-label">Today's suggested focus</div>
+      <div class="focus-chips" id="focusChips"></div>
+    </div>
+  </div>
+
+  <div id="checkinContainer"></div>
+
+  <div class="wheel-wrap">
+    <svg id="wheel" width="240" height="240" viewBox="0 0 240 240"></svg>
+  </div>
+  <div class="wheel-caption">Overall mastery — <span class="mono" id="wheelPct">0%</span> across 13 modules</div>
+  <div class="wheel-caption" style="margin-top:-18px;">White → Yellow → Green → Black. Belts are earned on your last 10 sessions, not your best one — one lucky round doesn't count as mastery.</div>
+
+  <div class="method">
+    <div class="method-head"><h2>Why this isn't just brain games</h2><span>Lean Six Sigma · DMAIC</span></div>
+    <div class="method-sub">Most "cognitive training" apps are slot machines with a progress bar. This one is built on DMAIC — the five-step discipline Six Sigma uses to fix processes that keep breaking, pointed at your mind instead of a factory floor.</div>
+    <div class="method-steps">
+      <div class="m-step"><div class="m-step-key">DEFINE</div><div class="m-step-body"><b>Know which kind of smart you're actually building.</b><span>Thirteen distinct intelligences, not one blended score.</span></div></div>
+      <div class="m-step"><div class="m-step-key">MEASURE</div><div class="m-step-body"><b>Every rep produces a number.</b><span>Reaction time, accuracy, level reached — not a vague sense of "good session."</span></div></div>
+      <div class="m-step"><div class="m-step-key">ANALYZE</div><div class="m-step-body"><b>The wheel shows the real gap.</b><span>Where you're strong, where you're avoiding, at a glance — root cause, not guesswork.</span></div></div>
+      <div class="m-step"><div class="m-step-key">IMPROVE</div><div class="m-step-body"><b>Structured drills target the weak spot.</b><span>Difficulty scales with you instead of staying flat or random.</span></div></div>
+      <div class="m-step"><div class="m-step-key">CONTROL</div><div class="m-step-body"><b>The streak exists to hold the gain.</b><span>Improvement that isn't sustained isn't improvement — it's a one-time fluke.</span></div></div>
+    </div>
+  </div>
+
+  <div class="section-label"><h2>Training modules</h2></div>
+  <div class="grid" id="moduleGrid"></div>
+
+  <div class="fw-note">
+    <b>What this covers.</b> Modules map to Howard Gardner's nine multiple intelligences, Robert Sternberg's triarchic theory (analytical, creative, practical), Charles Spearman's g-factor, and the IQ / EQ / SQ / AQ quotients. Where frameworks overlap — analytical reasoning, g-factor, and IQ all describe similar ground, for instance — they're trained through one combined module rather than three redundant ones. Each card lists which framework(s) it trains.
+  </div>
+  <div class="fw-note">
+    <b>On Intrapersonal and Existential belts.</b> Self-knowledge can't be graded right or wrong, so those two modules earn belts differently: coverage of the full prompt pool plus consistency of practice, not accuracy. A Black Belt there means you've actually sat with the hard questions repeatedly — not that you "won" at reflection.
+  </div>
+</main>
+
+<!-- ============ EXERCISE SCREEN ============ -->
+<main class="screen" id="exercise">
+  <div class="ex-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div>
+      <div class="ex-tag" id="exTag"></div>
+      <div class="ex-title" id="exTitle"></div>
+    </div>
+  </div>
+  <div class="ex-body">
+    <div class="ex-progress" id="exProgress"></div>
+    <div id="exStage"></div>
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   ONLYMINDS — cognitive training engine
+   ============================================================ */
+
+const STORAGE_KEY = 'progress';
+let PROGRESS = {}; // { moduleId: { plays: n, best: n, lastDate: 'YYYY-MM-DD' } }
+let streakDays = 0;
+
+/* ---------------- Content banks ---------------- */
+
+const LINGUISTIC_BANK = [
+  {q:"OCEAN is to WATER as DESERT is to ___", opts:["Sand","Cactus","Heat","Camel"], a:0},
+  {q:"Choose the word that does NOT belong.", opts:["Meticulous","Careless","Fastidious","Scrupulous"], a:1},
+  {q:"AUTHOR is to BOOK as COMPOSER is to ___", opts:["Symphony","Piano","Concert","Note"], a:0},
+  {q:"Which word means the opposite of 'terse'?", opts:["Verbose","Brief","Curt","Blunt"], a:0},
+  {q:"COBBLER is to SHOES as TAILOR is to ___", opts:["Garments","Needles","Fabric","Thread"], a:0},
+  {q:"Which of these is a synonym for 'ephemeral'?", opts:["Fleeting","Eternal","Solid","Ancient"], a:0},
+  {q:"PARADOX means ___", opts:["A statement that seems contradictory but may be true","A type of ancient scroll","A rhetorical question","A logical proof"], a:0},
+  {q:"Fill in: 'The committee's decision was ___, changing course three times in a week.'", opts:["Vacillating","Resolute","Unanimous","Static"], a:0},
+  {q:"Which word means 'wordy or long-winded'?", opts:["Verbose","Concise","Silent","Curt"], a:0},
+  {q:"HAMMER is to CARPENTER as SCALPEL is to ___", opts:["Surgeon","Patient","Hospital","Wound"], a:0},
+  {q:"Choose the word that does NOT belong.", opts:["Loquacious","Taciturn","Reticent","Laconic"], a:0},
+  {q:"Which is a synonym for 'ubiquitous'?", opts:["Present everywhere","Rare","Hidden","Ancient"], a:0},
+  {q:"Which word is closest in meaning to 'candid'?", opts:["Honest","Secretive","Rude","Cautious"], a:0},
+  {q:"PAINTER is to CANVAS as SCULPTOR is to ___", opts:["Marble","Brush","Gallery","Frame"], a:0},
+  {q:"Which is a synonym for 'austere'?", opts:["Severe and plain","Lavish","Warm","Playful"], a:0},
+  {q:"Fill in: 'Her argument was ___, leaving no room for doubt.'", opts:["Irrefutable","Vague","Flimsy","Circular"], a:0},
+  {q:"Choose the word that does NOT belong.", opts:["Gregarious","Sociable","Outgoing","Reclusive"], a:3},
+  {q:"Which word means 'practical rather than idealistic'?", opts:["Pragmatic","Idealistic","Whimsical","Theoretical"], a:0},
+  {q:"CHEF is to KITCHEN as PILOT is to ___", opts:["Cockpit","Runway","Airport","Sky"], a:0},
+  {q:"Which word means 'to make something less severe'?", opts:["Mitigate","Aggravate","Intensify","Provoke"], a:0}
+];
+
+const INTERPERSONAL_BANK = [
+  {q:"A teammate seems withdrawn after a meeting where their idea was dismissed. What's the most emotionally intelligent first move?", opts:["Check in privately and ask how they're feeling about it","Publicly praise their idea to compensate","Ignore it — it'll blow over","Tell them to toughen up"], a:0},
+  {q:"A friend vents about a bad day without asking for advice. Best response?", opts:["Listen and reflect their feelings back before offering any fix","Immediately list three solutions","Change the subject to something lighter","Tell them about your own worse day"], a:0},
+  {q:"In a group discussion, one person keeps getting talked over. What best signals social awareness?", opts:["Redirect the floor back to them by name","Let the group dynamic sort itself out","Message them privately afterward only","Speak louder than the interrupters"], a:0},
+  {q:"You disagree with a colleague's plan in a meeting. The most socially skilled approach is to...", opts:["Acknowledge what works before raising the concern","State your disagreement bluntly and move on","Stay silent and raise it with others later","Wait for someone else to say it first"], a:0},
+  {q:"A new team member seems unsure whether to speak up in meetings. Best supportive action?", opts:["Explicitly invite their input at a natural pause","Assume they'll speak up when ready","Ask them to present something big to force it","Nothing — it's not your role"], a:0},
+  {q:"Someone apologizes to you but you can tell they don't fully mean it. What best reads the situation?", opts:["Accept it, but note the tone as data for how you engage going forward","Confront them about their insincerity immediately","Pretend not to notice at all, permanently","Refuse the apology outright"], a:0},
+  {q:"A friend cancels plans last minute for the third time. Best socially intelligent response?", opts:["Ask directly how they're doing rather than assume","Stop inviting them, without saying why","Call them unreliable to mutual friends","Say nothing and quietly resent it"], a:0},
+  {q:"A team member takes credit for your idea in a meeting. Most socially skilled first move?", opts:["Address it calmly with them privately afterward","Call them out in front of everyone","Say nothing and let it go forever","Complain to everyone except them"], a:0},
+  {q:"A stranger at a party seems nervous and alone. Most socially aware opening move?", opts:["Ask a low-stakes open question about the event","Ignore them — not your job","Make a loud joke to the whole room","Stare until they approach you"], a:0},
+  {q:"Your partner shuts down during a disagreement. What best reads the moment?", opts:["They may need space before they can talk it through","They're being manipulative","Push harder for an immediate answer","End the relationship"], a:0},
+  {q:"A coworker constantly interrupts others. Best way to address it as a peer?", opts:["Name the pattern calmly, once, directly to them","Complain about them to everyone else","Interrupt them back to make a point","Ignore it indefinitely"], a:0},
+  {q:"You give feedback and the other person gets defensive. Best next move?", opts:["Slow down and acknowledge what's working before continuing","Repeat the criticism more firmly","Drop the subject completely","Point out that they're being defensive"], a:0},
+  {q:"A group chat goes silent after someone shares bad news. Most emotionally attuned response?", opts:["A brief, genuine message acknowledging it","Wait for someone else to respond first","Change the subject to lighten the mood","Send a generic emoji and nothing else"], a:0},
+  {q:"Someone consistently one-ups your stories with their own. Best read of the dynamic?", opts:["They may be seeking validation, not competing maliciously","They're definitely trying to belittle you","Stop telling stories around them entirely","Match them, story for story"], a:0},
+  {q:"A new manager avoids eye contact and speaks quickly in 1:1s. Most socially generous interpretation?", opts:["They might be nervous, not disinterested","They dislike you personally","They're hiding something from you","They're incompetent at their job"], a:0},
+  {q:"You're mediating a disagreement between two friends. Best first step?", opts:["Hear each side out fully before offering any opinion","Pick the side you agree with immediately","Tell them to work it out alone","Give your opinion before they finish"], a:0},
+  {q:"Someone thanks you unusually formally after a small favor. Most socially perceptive read?", opts:["They may feel more indebted than you intended","They're being sarcastic","They don't actually appreciate it","It means nothing at all"], a:0},
+  {q:"A friend keeps checking their phone during a serious conversation. Best way to handle it in the moment?", opts:["Gently name it: 'Can I have your full attention for a sec?'","Stop talking and sulk silently","Raise your voice to compete for attention","Never bring it up at all"], a:0}
+];
+
+const NATURE_BANK = [
+  {q:"Which of these is a decomposer in most ecosystems?", opts:["Fungi","Oak tree","Hawk","Granite"], a:0},
+  {q:"A sudden drop in barometric pressure most often precedes ___", opts:["A storm","A heatwave","A drought","Clear skies"], a:0},
+  {q:"Which pairing is a genuine predator-prey relationship?", opts:["Owl and field mouse","Bee and flower","Clownfish and anemone","Oak and moss"], a:0},
+  {q:"Deciduous trees drop their leaves primarily to ___", opts:["Conserve water and energy through winter","Attract pollinators","Repel insects","Increase photosynthesis"], a:0},
+  {q:"Which cloud type most often signals fair, stable weather?", opts:["Cumulus","Cumulonimbus","Nimbostratus","Stratus"], a:0},
+  {q:"A keystone species is best described as one that ___", opts:["Has an outsized effect on its ecosystem relative to its numbers","Is the largest animal in a habitat","Only eats plants","Migrates the farthest distance"], a:0},
+  {q:"Which of these best describes a symbiotic relationship?", opts:["Both organisms benefit from the interaction","One organism destroys the other","Organisms compete for the same resource","Organisms simply ignore each other"], a:0},
+  {q:"Migratory birds primarily time their journeys using ___", opts:["Day length and instinct","Random chance","Human calendars","Water temperature alone"], a:0},
+  {q:"Which factor most directly causes ocean tides?", opts:["The moon's gravitational pull","Wind patterns","Water temperature","Fish migration"], a:0},
+  {q:"A food web differs from a food chain because it ___", opts:["Shows multiple interconnected feeding relationships","Shows only one path of energy flow","Excludes producers entirely","Only applies to ocean ecosystems"], a:0},
+  {q:"Which is an example of an invasive species effect?", opts:["A non-native species outcompeting local species for resources","A native predator controlling native prey","Seasonal leaf fall in autumn","Normal seasonal pollination"], a:0},
+  {q:"Coral bleaching is primarily triggered by ___", opts:["Rising water temperatures stressing the coral","Too many fish nearby","Lack of sunlight","Excess coral growth"], a:0},
+  {q:"Which soil layer is richest in organic matter and nutrients?", opts:["Topsoil","Bedrock","Subsoil","Parent material"], a:0},
+  {q:"A biome is best defined as ___", opts:["A large region defined by its climate and dominant life","A single, isolated ecosystem","A specific type of soil","A short-term weather pattern"], a:0},
+  {q:"Why do deserts often get cold at night despite hot days?", opts:["Dry air holds little heat and releases it quickly","The sun sets faster in deserts","Sand absorbs no heat at all","Wind cools deserts in a unique way"], a:0},
+  {q:"Photosynthesis primarily converts which two inputs into energy?", opts:["Sunlight and carbon dioxide","Soil and water only","Oxygen and nitrogen","Heat and minerals"], a:0},
+  {q:"Which animal behavior often signals an approaching storm?", opts:["Restlessness and seeking shelter early","Increased feeding at midday","Louder mating calls","Migrating in the wrong season"], a:0},
+  {q:"The 'keystone species' concept was popularized by studying which interaction?", opts:["A predator whose removal collapses the ecosystem's balance","The largest species by physical size","The most numerous species present","The first species to arrive in an area"], a:0},
+  {q:"Which is a primary cause of soil erosion?", opts:["Removal of the plant roots that anchor soil","Excess rainfall in forests specifically","Cold weather in general","High biodiversity in an area"], a:0},
+  {q:"Bioluminescence in deep-sea creatures most often serves to ___", opts:["Attract prey or deter predators in total darkness","Regulate the creature's body temperature","Aid in digestion of food","Increase buoyancy in water"], a:0}
+];
+
+const PRACTICAL_BANK = [
+  {q:"Your flight is delayed and you'll miss a connection. Most practical first move?", opts:["Check rebooking options on the airline app while still at the gate","Wait in line at the counter before checking anything","Post about it on social media","Assume it'll work out"], a:0},
+  {q:"You're assembling furniture and a step doesn't match the instructions. Best approach?", opts:["Stop, check if a piece is oriented wrong, and re-read the prior step","Force the piece to fit","Skip the step entirely","Start over from scratch"], a:0},
+  {q:"You have three tasks due today with different deadlines and effort levels. Smartest sequencing?", opts:["Do the most time-sensitive and highest-impact task first","Do the easiest one first for momentum","Do them in the order they were assigned","Do the one you enjoy most first"], a:0},
+  {q:"A recipe calls for an ingredient you don't have. Most practical response?", opts:["Substitute with something that serves the same function","Abandon the recipe entirely","Buy the exact ingredient no matter the cost or delay","Guess randomly and hope for the best"], a:0},
+  {q:"Your car makes a new noise right before a long trip. Best move?", opts:["Get it checked before departure, even if it delays the trip","Turn up the radio and go anyway","Ignore it — noises are normal","Sell the car immediately"], a:0},
+  {q:"You're running late and hit unexpected traffic. Most practical move?", opts:["Notify whoever is waiting as soon as you know","Say nothing and hope you make it in time","Turn around and go home instead","Blame the traffic to avoid responsibility"], a:0},
+  {q:"A shared document has conflicting edits from two people. Best fix?", opts:["Compare versions and merge intentionally","Delete one person's version outright","Ask a third person to guess which is right","Ignore the conflict and move on"], a:0},
+  {q:"Your laptop won't turn on before an important call. First troubleshooting step?", opts:["Check the power connection and try a different outlet","Immediately assume it's permanently broken","Buy a new laptop on the spot","Wait a few days to see if it fixes itself"], a:0},
+  {q:"You're over budget halfway through a home project. Smartest next move?", opts:["Reassess scope and cut non-essential items before continuing","Keep spending at the same rate regardless","Abandon the project entirely","Borrow money without a revised plan"], a:0},
+  {q:"A package was delivered to the wrong address. Most effective first step?", opts:["Contact the carrier with the tracking number immediately","Wait and see if it shows up eventually","Assume it's lost forever","Blame the sender publicly"], a:0},
+  {q:"You need to learn a new tool quickly for a deadline. Most efficient approach?", opts:["Find the specific feature you need first, then expand from there","Read the entire manual cover to cover","Avoid the tool and do it manually instead","Wait for someone else to learn it first"], a:0},
+  {q:"Two calendar invites overlap. Best way to resolve it?", opts:["Assess which is higher priority and reschedule the other proactively","Attend neither meeting","Show up late to both","Let both hosts figure it out themselves"], a:0},
+  {q:"You're assembling a shelf and a screw strips. Most practical fix?", opts:["Use a slightly larger screw or add grip material","Force it harder regardless","Glue the whole shelf together instead","Abandon the shelf entirely"], a:0},
+  {q:"Your presentation software crashes 5 minutes before a meeting. Best move?", opts:["Have a backup format (PDF or printed) ready to go","Panic and cancel the meeting","Explain the tech issue and do nothing else","Reboot repeatedly with no backup plan"], a:0},
+  {q:"You realize mid-recipe you're short on time, not just ingredients. Smartest adjustment?", opts:["Simplify the dish to fit the time you actually have","Try to cook everything anyway and rush","Cancel dinner entirely","Order the same dish from a restaurant"], a:0},
+  {q:"A client sends vague instructions for a project. Best first move?", opts:["Ask 2-3 clarifying questions before starting significant work","Guess and hope your interpretation is right","Start immediately on your own interpretation","Wait indefinitely for more clarity"], a:0},
+  {q:"Your phone battery is critically low before navigating somewhere unfamiliar. Best move?", opts:["Screenshot or write down directions before it dies","Keep navigating until it dies","Ask a stranger only after it dies","Turn the phone off now and hope for the best"], a:0},
+  {q:"You discover a mistake in a report right before sending it. Best move?", opts:["Fix it now, even if it delays sending slightly","Send it anyway and correct it later","Blame the error on someone else","Delete the report entirely"], a:0},
+  {q:"A subscription you forgot about renews unexpectedly. Most effective response?", opts:["Check the cancellation policy and request a refund if eligible","Assume nothing can be done about it","Dispute the entire card immediately","Ignore it and let it happen again"], a:0},
+  {q:"You're assigned a task outside your expertise with a tight deadline. Smartest first move?", opts:["Identify what you can learn fast vs. what needs outside help","Attempt it all alone regardless of skill gaps","Refuse the task outright","Delay starting until you feel fully ready"], a:0}
+];
+
+const EQ_BANK = [
+  {q:"You feel your frustration rising in a tense conversation. Most emotionally intelligent move?", opts:["Name the feeling internally and pause before responding","Suppress it completely and say nothing later","Let it out immediately, however it comes","Leave the conversation without a word"], a:0},
+  {q:"A colleague's tone is short with you today. What best reflects high EQ before reacting?", opts:["Consider they might be having a hard day unrelated to you","Assume it's personal and respond in kind","Report them to a manager immediately","Avoid them from now on"], a:0},
+  {q:"You made a mistake that affected the team. Healthiest emotional response?", opts:["Acknowledge it directly, then focus on the fix without spiraling","Deny it happened","Ruminate on it for days without acting","Blame external circumstances only"], a:0},
+  {q:"You're excited about an idea but the room seems unconvinced. Best regulated response?", opts:["Read the room, dial back enthusiasm, and ask what's causing hesitation","Push harder and talk over objections","Withdraw the idea instantly without any inquiry","Take it personally and disengage"], a:0},
+  {q:"Which best describes emotional regulation (not suppression)?", opts:["Feeling the emotion fully while choosing how to act on it","Never feeling negative emotions at all","Hiding all emotion from others at all times","Acting on every emotional impulse immediately"], a:0},
+  {q:"You feel jealousy watching a friend's success. Most emotionally intelligent response?", opts:["Notice the feeling and ask what it reveals about your own goals","Suppress it and quietly distance yourself","Diminish their success out loud","Ignore it and hope it fades on its own"], a:0},
+  {q:"You're anxious before a big presentation. Best regulation strategy?", opts:["Acknowledge the nerves as normal energy, not a threat","Tell yourself firmly to stop feeling nervous","Avoid presenting altogether","Distract yourself completely until the moment arrives"], a:0},
+  {q:"A friend's joke lands wrong and hurts your feelings. Most emotionally intelligent move?", opts:["Tell them honestly once you've processed it","Laugh it off and bury the feeling permanently","Make a harsher joke back immediately","Cut them off with no explanation"], a:0},
+  {q:"You notice your mood is very reactive to social media today. Best EQ move?", opts:["Recognize the pattern and consider stepping away","Keep scrolling to distract from it","Blame the app entirely and change nothing","Post about your mood publicly"], a:0},
+  {q:"Which best distinguishes empathy from sympathy?", opts:["Empathy shares the felt experience; sympathy observes from outside","They are essentially the same thing","Sympathy is deeper than empathy","Empathy requires agreeing with the person"], a:0},
+  {q:"Someone gives you tough feedback in a harsh tone. Most emotionally intelligent response?", opts:["Separate the content of the feedback from its delivery","Reject the feedback because of the tone","Match their harshness back at them","Shut down and disengage completely"], a:0},
+  {q:"You catch yourself catastrophizing about a small mistake. Best regulation move?", opts:["Name the thought as catastrophizing and check it against the facts","Let the spiral continue unchecked","Avoid making decisions again out of fear","Tell yourself it doesn't matter at all"], a:0},
+  {q:"A close friend is grieving and you don't know what to say. Most emotionally intelligent move?", opts:["Be present without needing to fix or say the perfect thing","Avoid them until you know exactly what to say","Change the subject to cheer them up","Give unsolicited advice on moving on"], a:0},
+  {q:"You feel your patience running out with a slow coworker. Best in-the-moment move?", opts:["Take a breath and separate their pace from your frustration","Snap at them to speed up","Take over their task silently, resentfully","Complain about them to others immediately"], a:0},
+  {q:"Which best reflects high self-awareness in a conflict?", opts:["Noticing your own rising defensiveness as it happens","Assuming you're always right","Only noticing the other person's tone","Avoiding all conflict permanently"], a:0},
+  {q:"You feel proud after a win but a friend seems less enthused than expected. Emotionally intelligent read?", opts:["They may have their own unrelated stuff going on — ask, don't assume","They must be jealous and petty","Stop sharing wins with them entirely","Confront them about their reaction"], a:0},
+  {q:"Which is a sign of emotional maturity in disagreement?", opts:["Saying 'I see your point' without abandoning your own","Needing to win every exchange","Avoiding the topic forever","Agreeing just to end the discomfort"], a:0},
+  {q:"You're irritable and can't pinpoint why. Best first step?", opts:["Check hunger, sleep, and stress load before assigning blame","Blame the nearest person","Ignore it and push through the day","Assume something is deeply wrong"], a:0},
+  {q:"A partner expresses a need you didn't realize you were missing. Most emotionally intelligent response?", opts:["Thank them for naming it and ask what would help","Get defensive that they're unhappy","Dismiss it as them being needy","Change the subject entirely"], a:0},
+  {q:"Which best describes healthy emotional expression at work?", opts:["Naming the feeling professionally and linking it to the issue","Never showing any emotion at work","Venting fully and unfiltered to anyone nearby","Only ever expressing positive emotions"], a:0}
+];
+
+const AQ_BANK = [
+  {q:"A project you led fails publicly. Highest-AQ first response?", opts:["Separate what was in your control from what wasn't, then plan the next step","Assume you're generally bad at this kind of work","Quit similar projects going forward","Blame the team publicly"], a:0},
+  {q:"You've been rejected from something you prepared for extensively. Most resilient framing?", opts:["Treat it as data about this attempt, not a verdict on your worth","Conclude you should never try again","Assume the process was rigged","Give up on the goal without adjusting the approach"], a:0},
+  {q:"Which response pattern best predicts long-term resilience under repeated setbacks?", opts:["Viewing setbacks as temporary and specific to the situation","Viewing setbacks as permanent and about to spread everywhere","Avoiding any situation that could produce a setback","Expecting perfection on the first attempt every time"], a:0},
+  {q:"Midway through a hard goal, motivation drops sharply. Highest-AQ move?", opts:["Shrink the next step down to something small and doable today","Wait for motivation to return before doing anything","Abandon the goal and pick an easier one","Push through with no adjustment to the plan"], a:0},
+  {q:"A plan falls apart due to something genuinely outside your control. Best response?", opts:["Reassess what's now possible and adapt the plan","Treat it as proof the whole goal was wrong","Keep executing the original plan unchanged","Stop planning altogether going forward"], a:0},
+  {q:"You've failed at the same goal twice. Highest-AQ move before a third attempt?", opts:["Diagnose specifically what failed differently each time","Assume you're simply not capable of it","Try the exact same approach again, unchanged","Give up and pick an unrelated goal"], a:0},
+  {q:"Your income drops unexpectedly. Most resilient first response?", opts:["Reassess the budget and identify controllable levers immediately","Panic-spend to feel better short term","Assume it will never recover","Avoid looking at finances entirely"], a:0},
+  {q:"You're the only one who showed up prepared to a group meeting. Highest-AQ response?", opts:["Adjust your plan to what's actually possible today","Complain and refuse to proceed","Do everyone else's work silently and resentfully","Walk out of the meeting"], a:0},
+  {q:"A mentor you relied on becomes unavailable. Most resilient adaptation?", opts:["Identify what specifically they gave you and find alternate sources","Assume you can't progress without them","Stop pursuing the goal entirely","Wait indefinitely for them to return"], a:0},
+  {q:"You receive harsh criticism on something you worked hard on. Highest-AQ filter?", opts:["Separate what's useful signal from what's just tone","Reject all of it because it stung","Accept all of it as absolute truth","Quit the craft entirely"], a:0},
+  {q:"Which mindset best predicts recovery speed after a major setback?", opts:["Viewing the setback as one event, not a defining pattern","Viewing every setback as proof of a fixed flaw","Refusing to acknowledge the setback happened","Assuming recovery is entirely out of your hands"], a:0},
+  {q:"Your carefully built routine gets disrupted by a life change. Best AQ response?", opts:["Rebuild a minimum viable version of the routine immediately","Wait for life to return to normal before restarting anything","Abandon the routine as a lost cause","Blame the disruption and stop trying"], a:0},
+  {q:"You're publicly wrong about something you were confident in. Most resilient move?", opts:["Correct the record plainly and move forward without excess self-punishment","Avoid the topic and person forever","Argue your original point regardless of new facts","Withdraw from the group entirely"], a:0},
+  {q:"Which best describes 'AQ' as distinct from raw optimism?", opts:["A measurable response pattern to adversity, not just a positive attitude","Always staying happy no matter what","Denying that setbacks are real","The same thing as luck"], a:0},
+  {q:"A long-term plan gets derailed by something totally unforeseeable. Highest-AQ next step?", opts:["Ask what's still achievable given the new reality","Treat the entire plan as wasted effort","Refuse to make a new plan out of frustration","Wait for someone else to fix it"], a:0},
+  {q:"You've been avoiding a hard conversation for weeks. Most resilient move?", opts:["Set a specific time this week to have it, however uncomfortable","Keep avoiding it until it resolves itself","Have it impulsively without any preparation","Convince yourself it doesn't matter"], a:0},
+  {q:"A peer surpasses you at something you cared about. Highest-AQ framing?", opts:["Use it as specific information about where to improve","Assume you'll never catch up","Dismiss their success as luck to protect your ego","Quit the pursuit entirely"], a:0},
+  {q:"You're exhausted and behind on a goal you set enthusiastically weeks ago. Best AQ move?", opts:["Scale the goal down to something sustainable rather than abandon it","Push at the original intensity regardless of burnout","Quit and call the goal unrealistic","Wait for motivation to return unprompted"], a:0},
+  {q:"Which best reflects a 'control' response versus a 'helpless' response to adversity?", opts:["Asking 'what part of this can I actually influence right now?'","Asking 'why does this always happen to me?'","Assuming nothing can be done until things improve on their own","Blaming the situation entirely and stopping there"], a:0},
+  {q:"You've hit a plateau despite consistent effort. Highest-AQ interpretation?", opts:["Plateaus often precede breakthroughs if input stays consistent","A plateau means the effort was wasted","A plateau means you've hit your permanent ceiling","A plateau means the goal itself should change"], a:0}
+];
+
+const INTRA_PROMPTS = [
+  "What emotion have you felt most often this week, and what tends to trigger it?",
+  "Describe a recent decision you made. What were you actually optimizing for underneath it?",
+  "What's something you know about yourself that you rarely say out loud?",
+  "When do you feel most like yourself — and what's present in that moment?",
+  "What's a belief about yourself you've outgrown but still catch yourself acting on?",
+  "What are you avoiding right now, and what would it cost to face it?",
+  "What pattern do you keep repeating that you've noticed but haven't changed?",
+  "Whose opinion of you do you weigh too heavily, and why?",
+  "What does your ideal ordinary Tuesday actually look like?",
+  "What's a compliment you have trouble accepting, and why?",
+  "When did you last change your mind about something important? What shifted it?",
+  "What are you pretending not to know about your current situation?",
+  "What does 'enough' look like for you right now — and who set that bar?",
+  "What's something you do for approval rather than because you actually want to?",
+  "What would you do differently this week if no one would ever find out?",
+  "What's a fear you've outgrown, and what replaced it?",
+  "Where in your life are you being patient, and where are you just stalling?",
+  "What's the story you tell about yourself that might not be fully true anymore?",
+  "What do you need to hear right now that you haven't said to yourself?",
+  "What's something you're proud of that you rarely mention to anyone?",
+  "What relationship in your life deserves more honesty than it currently gets?",
+  "What would you stop doing if you trusted yourself more?",
+  "What's a boundary you know you need but haven't set yet?",
+  "When do you feel most drained, and what does that tell you?",
+  "What's one thing about your current path you chose, versus simply inherited?"
+];
+
+const EXIST_PROMPTS = [
+  "What would you want people to say defined how you spent your time, if you can't hear it yourself?",
+  "If nothing you did was ever remembered, would it change what you'd choose to do? Why or why not?",
+  "What do you think you're actually here to figure out, if anything?",
+  "Where do you locate meaning — in outcomes, in process, in relationships, or somewhere else?",
+  "What's a question about existence you've stopped asking, and why did you stop?",
+  "Is a life optimized for happiness the same as a meaningful life? Where do they diverge?",
+  "If you had proof your choices mattered to no one but yourself, would that make them matter more or less?",
+  "What do you think happens to meaning when no one is left to remember it?",
+  "Is it possible to live authentically while also belonging fully to a group? What would that require?",
+  "What would you need to believe in order to feel your life was 'enough' as it is right now?",
+  "Do you think suffering has to mean something, or can it simply be meaningless and still be survived?",
+  "What separates a life that is merely long from one that is full?",
+  "If you could not fail, what would you stop postponing?",
+  "What do you owe to people who will exist after you're gone, if anything?",
+  "Is freedom the absence of constraints, or the presence of a chosen purpose? Which feels truer to you?",
+  "What's a truth about existence you accept intellectually but haven't fully absorbed emotionally?",
+  "If meaning is something you build rather than find, what have you actually built so far?",
+  "What would change about how you live if you fully accepted that time is finite?",
+  "Do you think identity is something discovered or something constructed? What's yours been so far?",
+  "What's the difference between being alone and being lonely, in your own experience?",
+  "If your work disappeared tomorrow, what part of you would remain?",
+  "What do you think is owed to you by existence, if anything at all?",
+  "Where do you draw the line between accepting your circumstances and resigning to them?",
+  "What would it mean to live 'well' if no external measure of success existed?",
+  "What's a question about your own existence you're afraid to answer honestly?"
+];
+
+const CREATIVE_PROMPTS = [
+  "List as many uses for a paperclip as you can.",
+  "List as many uses for a brick as you can.",
+  "List as many uses for an old newspaper as you can.",
+  "List as many uses for a rubber band as you can.",
+  "List as many uses for an empty glass bottle as you can.",
+  "List as many uses for a wooden pallet as you can.",
+  "List as many uses for a broken umbrella as you can.",
+  "List as many uses for a tin can as you can.",
+  "List as many uses for an old cassette tape as you can.",
+  "List as many uses for a single sock as you can.",
+  "List as many uses for a cardboard box as you can.",
+  "List as many uses for a dead cell phone as you can.",
+  "List as many uses for a worn-out tire as you can.",
+  "List as many uses for a ball of string as you can.",
+  "List as many uses for a cracked mirror as you can."
+];
+
+/* ---------------- Philosophy quotes (one per module) ---------------- */
+
+/* ---------------- Daily check-in prompts (end-of-day, rotates once per day) ---------------- */
+
+const DAILY_PROMPTS = [
+  "What got easier today?",
+  "What still feels hard?",
+  "Which module surprised you most today?",
+  "How's your energy compared to when you started today?",
+  "What's one thing you want to focus on tomorrow?",
+  "Did today feel like progress or maintenance?",
+  "What almost made you skip training today?",
+  "Where did you notice the most improvement this week?",
+  "What pattern are you starting to notice in yourself?",
+  "If today was one rep, what did it actually strengthen?"
+];
+
+const QUOTES = {
+  linguistic: {text:"The limits of my language mean the limits of my world.", by:"Ludwig Wittgenstein"},
+  logical: {text:"I think, therefore I am.", by:"René Descartes"},
+  spatial: {text:"Let no one ignorant of geometry enter.", by:"Inscribed at Plato's Academy"},
+  musical: {text:"Without music, life would be a mistake.", by:"Friedrich Nietzsche"},
+  kinesthetic: {text:"A sound mind in a sound body.", by:"Juvenal"},
+  interpersonal: {text:"Man is by nature a social animal.", by:"Aristotle"},
+  intrapersonal: {text:"The unexamined life is not worth living.", by:"Socrates, via Plato"},
+  naturalistic: {text:"No man ever steps in the same river twice.", by:"Heraclitus"},
+  existential: {text:"You have power over your mind, not outside events.", by:"Marcus Aurelius"},
+  creative: {text:"To exist is to go on creating oneself endlessly.", by:"Henri Bergson"},
+  practical: {text:"I hear and I forget. I do and I understand.", by:"Attributed to Confucius"},
+  eq: {text:"Men are disturbed not by things, but by their view of them.", by:"Epictetus"},
+  aq: {text:"That which does not kill us makes us stronger.", by:"Friedrich Nietzsche"}
+};
+
+/* ---------------- Module definitions ---------------- */
+
+const MODULES = [
+  {id:'linguistic', name:'Linguistic', tag:'Gardner', icon:'✒️', desc:'Word relationships, vocabulary, and language reasoning.', type:'mcq', bank:LINGUISTIC_BANK, rounds:5},
+  {id:'logical', name:'Logical–Mathematical', tag:'Gardner · Spearman g · IQ · Sternberg Analytical', icon:'∑', desc:'Abstract reasoning and numerical pattern recognition.', type:'sequence', rounds:5},
+  {id:'spatial', name:'Spatial', tag:'Gardner', icon:'◈', desc:'3D visualization and mental rotation.', type:'spatial', rounds:5},
+  {id:'musical', name:'Musical', tag:'Gardner', icon:'♪', desc:'Rhythm, pitch, and pattern recall.', type:'rhythm', rounds:1},
+  {id:'kinesthetic', name:'Bodily–Kinesthetic', tag:'Gardner', icon:'⚡', desc:'Coordination and reaction speed.', type:'reaction', rounds:5},
+  {id:'interpersonal', name:'Interpersonal', tag:'Gardner · SQ', icon:'👥', desc:'Reading and responding well to other people.', type:'mcq', bank:INTERPERSONAL_BANK, rounds:5},
+  {id:'intrapersonal', name:'Intrapersonal', tag:'Gardner', icon:'◐', desc:'Self-awareness and honest reflection.', type:'reflect', prompts:INTRA_PROMPTS, rounds:1},
+  {id:'naturalistic', name:'Naturalistic', tag:'Gardner', icon:'🍃', desc:'Recognizing patterns in the natural world.', type:'mcq', bank:NATURE_BANK, rounds:5},
+  {id:'existential', name:'Existential', tag:'Gardner', icon:'∞', desc:'Sitting with deep questions of meaning.', type:'reflect', prompts:EXIST_PROMPTS, rounds:1},
+  {id:'creative', name:'Creative', tag:'Sternberg', icon:'✦', desc:'Divergent thinking under time pressure.', type:'divergent', prompts:CREATIVE_PROMPTS, rounds:1},
+  {id:'practical', name:'Practical', tag:'Sternberg', icon:'🛠', desc:'Real-world, street-smart problem solving.', type:'mcq', bank:PRACTICAL_BANK, rounds:5},
+  {id:'eq', name:'Emotional (EQ)', tag:'EQ', icon:'♡', desc:'Perceiving, understanding, and regulating emotion.', type:'mcq', bank:EQ_BANK, rounds:5},
+  {id:'aq', name:'Adversity (AQ)', tag:'AQ', icon:'▲', desc:'Resilience and response to setbacks.', type:'mcq', bank:AQ_BANK, rounds:5},
+];
+
+/* ---------------- Storage ---------------- */
+
+async function loadProgress(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, false);
+    if(res && res.value) PROGRESS = JSON.parse(res.value);
+  }catch(e){ PROGRESS = {}; }
+  computeStreak();
+}
+
+async function saveProgress(){
+  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(PROGRESS), false); }catch(e){}
+}
+
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+function getMeta(){
+  if(!PROGRESS._meta) PROGRESS._meta = {startDate: todayStr(), activeDates: []};
+  return PROGRESS._meta;
+}
+
+function daysBetween(a,b){
+  return Math.round((new Date(b+'T00:00:00') - new Date(a+'T00:00:00')) / 86400000);
+}
+
+function recordCompletion(moduleId, score){
+  const p = PROGRESS[moduleId] || {plays:0, best:0, lastDate:null, seenIdx:[], everSeen:[], history:[]};
+  if(!p.history) p.history = [];
+  p.plays += 1;
+  p.best = Math.max(p.best, score);
+  p.lastDate = todayStr();
+  p.history.push({score, at: todayStr()});
+  p.history = p.history.slice(-10);
+  PROGRESS[moduleId] = p;
+  const meta = getMeta();
+  if(!meta.activeDates.includes(todayStr())) meta.activeDates.push(todayStr());
+  computeStreak();
+  saveProgress();
+}
+
+/* Cycles through the full pool before any item repeats, persisted across sessions.
+   Also tracks everSeen (cumulative, never resets) for Reflect-module mastery coverage. */
+function pickIndex(poolLength){
+  const p = PROGRESS[currentModule.id] || (PROGRESS[currentModule.id] = {plays:0, best:0, lastDate:null, seenIdx:[], everSeen:[], history:[]});
+  if(!p.seenIdx) p.seenIdx = [];
+  if(!p.everSeen) p.everSeen = [];
+  const usedThisSession = (session.results||[]).map(r=>r.qIndex);
+  let pool = Array.from({length:poolLength},(_,i)=>i).filter(i=>!p.seenIdx.includes(i) && !usedThisSession.includes(i));
+  if(pool.length === 0){
+    p.seenIdx = [];
+    pool = Array.from({length:poolLength},(_,i)=>i).filter(i=>!usedThisSession.includes(i));
+    if(pool.length === 0) pool = Array.from({length:poolLength},(_,i)=>i);
+  }
+  const idx = pool[Math.floor(Math.random()*pool.length)];
+  p.seenIdx.push(idx);
+  if(!p.everSeen.includes(idx)) p.everSeen.push(idx);
+  saveProgress();
+  return idx;
+}
+
+/* ---------------- Mastery (Belt) engine ---------------- */
+/* Belts are earned on rolling performance over the last 10 sessions, not a lifetime best —
+   this is Process Capability in LSS terms: can you reliably deliver, not did you deliver once. */
+
+const BELT_COLOR = {White:'#5A6178', Yellow:'#D9B54A', Green:'#5B8C7B', Black:'#C9A227'};
+
+function normalizeScore(moduleId, entryScore){
+  const m = MODULES.find(x=>x.id===moduleId);
+  switch(m.type){
+    case 'mcq': case 'sequence': case 'spatial':
+      return Math.round((entryScore / m.rounds) * 100);
+    case 'rhythm':
+      return Math.min(100, Math.round((entryScore / 8) * 100));
+    case 'reaction':
+      return Math.max(0, Math.min(100, Math.round(100 * (750 - entryScore) / (750 - 250))));
+    case 'divergent':
+      return Math.min(100, Math.round((entryScore / 15) * 100));
+    default:
+      return null;
+  }
+}
+
+function computeBelt(moduleId){
+  const m = MODULES.find(x=>x.id===moduleId);
+  const p = PROGRESS[moduleId] || {plays:0, history:[], everSeen:[]};
+  const sessions = p.plays || 0;
+  let scorePct;
+  if(m.type === 'reflect'){
+    const poolLen = m.prompts.length;
+    const seen = (p.everSeen||[]).length;
+    scorePct = Math.round((seen/poolLen)*100);
+  } else {
+    const hist = (p.history||[]).slice(-10);
+    scorePct = hist.length === 0 ? 0 : Math.round(hist.reduce((a,e)=>a+normalizeScore(moduleId,e.score),0)/hist.length);
+  }
+  let tier = 'White';
+  if(sessions>=10 && scorePct>=90) tier = 'Black';
+  else if(sessions>=6 && scorePct>=80) tier = 'Green';
+  else if(sessions>=3 && scorePct>=60) tier = 'Yellow';
+  return {tier, scorePct, sessions, color: BELT_COLOR[tier]};
+}
+
+function computeStreak(){
+  const dates = new Set(Object.values(PROGRESS).map(p=>p.lastDate).filter(Boolean));
+  if(dates.size === 0){ streakDays = 0; return; }
+  let streak = 0;
+  let d = new Date();
+  while(true){
+    const key = d.toISOString().slice(0,10);
+    if(dates.has(key)){ streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  streakDays = streak;
+}
+
+/* ---------------- Rendering: Home ---------------- */
+
+/* ---------------- Rendering: Day tracker ---------------- */
+
+function renderDayTracker(){
+  const meta = getMeta();
+  const dayIdx = Math.max(0, daysBetween(meta.startDate, todayStr())); // 0-based, uncapped
+  const dayNumDisplay = Math.min(30, dayIdx + 1);
+  document.getElementById('dayNum').textContent = dayNumDisplay;
+  document.getElementById('dayCaption').textContent = dayIdx >= 30
+    ? 'Past day 30 — the habit is built. Keep the streak alive.'
+    : '21 days builds a habit. 30 locks it in.';
+
+  const dotsWrap = document.getElementById('dayDots');
+  dotsWrap.innerHTML = '';
+  for(let i=0;i<30;i++){
+    const d = new Date(meta.startDate+'T00:00:00');
+    d.setDate(d.getDate()+i);
+    const key = d.toISOString().slice(0,10);
+    const dot = document.createElement('div');
+    dot.className = 'day-dot' + (meta.activeDates.includes(key) ? ' filled' : '') + (i===dayIdx ? ' today' : '');
+    dotsWrap.appendChild(dot);
+  }
+
+  const n = MODULES.length;
+  const focus = [0,5,9].map(o => MODULES[(dayIdx + o) % n]);
+  const chipsWrap = document.getElementById('focusChips');
+  chipsWrap.innerHTML = '';
+  focus.forEach(m=>{
+    const chip = document.createElement('button');
+    chip.className = 'focus-chip';
+    chip.innerHTML = `<span class="ic">${m.icon}</span> ${m.name}`;
+    chip.addEventListener('click', ()=>startModule(m.id));
+    chipsWrap.appendChild(chip);
+  });
+}
+
+function renderDailyCheckin(){
+  const meta = getMeta();
+  const dayIdx = Math.max(0, daysBetween(meta.startDate, todayStr()));
+  const wrap = document.getElementById('checkinContainer');
+  if(!PROGRESS._dailyLog) PROGRESS._dailyLog = {};
+  const already = PROGRESS._dailyLog[todayStr()];
+
+  if(already){
+    wrap.innerHTML = `<div class="checkin-card"><div class="checkin-done"><div class="tick">✓</div> Reflected today — back tomorrow with a new prompt.</div></div>`;
+    return;
+  }
+
+  const prompt = DAILY_PROMPTS[dayIdx % DAILY_PROMPTS.length];
+  wrap.innerHTML = `<div class="checkin-card">
+    <div class="checkin-label">End-of-day check-in</div>
+    <div class="checkin-prompt">${prompt}</div>
+    <textarea id="checkinInput" placeholder="A sentence or two is enough…"></textarea>
+    <button class="primary-btn" id="checkinSubmit" disabled>Save today's reflection</button>
+  </div>`;
+  const ta = document.getElementById('checkinInput');
+  const btn = document.getElementById('checkinSubmit');
+  ta.addEventListener('input', ()=>{ btn.disabled = ta.value.trim().length < 5; });
+  btn.addEventListener('click', ()=>{
+    PROGRESS._dailyLog[todayStr()] = {prompt, text: ta.value.trim()};
+    if(!meta.activeDates.includes(todayStr())) meta.activeDates.push(todayStr());
+    computeStreak();
+    saveProgress();
+    renderDailyCheckin();
+    document.getElementById('streakBadge').textContent = `🔥 ${streakDays} day streak`;
+  });
+}
+
+function renderHome(){
+  document.getElementById('streakBadge').textContent = `🔥 ${streakDays} day streak`;
+  renderDayTracker();
+  renderDailyCheckin();
+  const grid = document.getElementById('moduleGrid');
+  grid.innerHTML = '';
+  MODULES.forEach(m=>{
+    const p = PROGRESS[m.id] || {plays:0, best:0};
+    const belt = computeBelt(m.id);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="card-icon">${m.icon}</div>
+        <button class="card-go" data-id="${m.id}">Train</button>
+      </div>
+      <div>
+        <div class="card-name">${m.name}</div>
+        <div class="card-tag">${m.tag}</div>
+      </div>
+      <div class="card-desc">${m.desc}</div>
+      <div class="card-quote">"${QUOTES[m.id].text}"<cite>— ${QUOTES[m.id].by}</cite></div>
+      <div class="card-foot">
+        <div class="belt-badge" style="border-color:${belt.color}; color:${belt.color}">${belt.tier} Belt</div>
+        <div class="card-progress">${p.plays||0} session${p.plays===1?'':'s'}</div>
+      </div>
+      <div class="bar"><div class="bar-fill" style="width:${belt.scorePct}%; background:${belt.color}"></div></div>
+    `;
+    card.querySelector('.card-go').addEventListener('click', ()=>startModule(m.id));
+    grid.appendChild(card);
+  });
+  renderWheel();
+}
+
+function renderWheel(){
+  const svg = document.getElementById('wheel');
+  const n = MODULES.length;
+  const cx=120, cy=120, rOuter=98, rInner=34;
+  let paths = '';
+  let totalPct = 0;
+  MODULES.forEach((m,i)=>{
+    const belt = computeBelt(m.id);
+    const frac = belt.scorePct/100;
+    totalPct += frac;
+    const a0 = (i/n)*2*Math.PI - Math.PI/2;
+    const a1 = ((i+1)/n)*2*Math.PI - Math.PI/2 - 0.045;
+    const r = rInner + (rOuter-rInner)*frac;
+    const x0 = cx + r*Math.cos(a0), y0 = cy + r*Math.sin(a0);
+    const x1 = cx + r*Math.cos(a1), y1 = cy + r*Math.sin(a1);
+    const xi0 = cx + rInner*Math.cos(a0), yi0 = cy + rInner*Math.sin(a0);
+    const xi1 = cx + rInner*Math.cos(a1), yi1 = cy + rInner*Math.sin(a1);
+    const large = 0;
+    paths += `<path d="M${xi0},${yi0} L${x0},${y0} A${r},${r} 0 ${large} 1 ${x1},${y1} L${xi1},${yi1} A${rInner},${rInner} 0 ${large} 0 ${xi0},${yi0} Z" fill="${belt.color}" opacity="${frac>0?0.9:0.4}"/>`;
+  });
+  svg.innerHTML = `${paths}<circle cx="${cx}" cy="${cy}" r="${rInner-4}" fill="#1B1E2B" stroke="#2E3345"/>`;
+  const overall = Math.round((totalPct/n)*100);
+  document.getElementById('wheelPct').textContent = overall + '%';
+}
+
+/* ---------------- Navigation ---------------- */
+
+let currentModule = null;
+let session = null;
+
+function goHome(){
+  stopAllTimers();
+  document.getElementById('home').classList.add('active');
+  document.getElementById('exercise').classList.remove('active');
+  renderHome();
+}
+
+function startModule(id){
+  currentModule = MODULES.find(m=>m.id===id);
+  document.getElementById('home').classList.remove('active');
+  document.getElementById('exercise').classList.add('active');
+  document.getElementById('exTag').textContent = currentModule.tag;
+  document.getElementById('exTitle').textContent = currentModule.name;
+  session = {round:0, score:0, results:[]};
+  renderProgressDots();
+  runRound();
+}
+
+function renderProgressDots(){
+  const wrap = document.getElementById('exProgress');
+  wrap.innerHTML = '';
+  const total = currentModule.rounds;
+  for(let i=0;i<total;i++){
+    const s = document.createElement('span');
+    if(i < session.round) s.classList.add('done');
+    else if(i === session.round) s.classList.add('now');
+    wrap.appendChild(s);
+  }
+}
+
+function nextRound(){
+  session.round++;
+  if(session.round >= currentModule.rounds){
+    showResults();
+  } else {
+    renderProgressDots();
+    runRound();
+  }
+}
+
+function runRound(){
+  const stage = document.getElementById('exStage');
+  stage.innerHTML = '';
+  switch(currentModule.type){
+    case 'mcq': renderMCQ(stage); break;
+    case 'sequence': renderSequence(stage); break;
+    case 'spatial': renderSpatial(stage); break;
+    case 'rhythm': renderRhythm(stage); break;
+    case 'reaction': renderReaction(stage); break;
+    case 'reflect': renderReflect(stage); break;
+    case 'divergent': renderDivergent(stage); break;
+  }
+}
+
+/* ---------------- MCQ ---------------- */
+
+function renderMCQ(stage){
+  const idx = pickIndex(currentModule.bank.length);
+  const item = currentModule.bank[idx];
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">${item.q}</div>
+    <div class="opts">${item.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div>`;
+  stage.appendChild(box);
+  const btns = box.querySelectorAll('.opt');
+  btns.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      btns.forEach(x=>x.disabled=true);
+      const chosen = parseInt(b.dataset.i);
+      const correct = item.a;
+      b.classList.add(chosen===correct ? 'correct' : 'wrong');
+      if(chosen!==correct) btns[correct].classList.add('correct');
+      if(chosen===correct) session.score++;
+      session.results.push({qIndex:idx});
+      const cont = document.createElement('button');
+      cont.className = 'primary-btn';
+      cont.textContent = session.round+1 >= currentModule.rounds ? 'See results' : 'Continue';
+      cont.style.marginTop = '18px';
+      stage.appendChild(cont);
+      cont.addEventListener('click', nextRound);
+    });
+  });
+}
+
+/* ---------------- Sequence (logical) ---------------- */
+
+function genSequence(difficulty){
+  const types = ['arith','geo','square','fib'];
+  const t = types[Math.min(difficulty, types.length-1)];
+  let seq = [], answer, rule;
+  if(t==='arith'){
+    const start = 2 + Math.floor(Math.random()*8);
+    const step = 2 + Math.floor(Math.random()*6);
+    seq = [0,1,2,3].map(i=>start+i*step);
+    answer = start+4*step;
+    rule = `+${step} each step`;
+  } else if(t==='geo'){
+    const start = 2 + Math.floor(Math.random()*3);
+    const ratio = 2 + Math.floor(Math.random()*2);
+    seq = [0,1,2,3].map(i=>start*Math.pow(ratio,i));
+    answer = start*Math.pow(ratio,4);
+    rule = `×${ratio} each step`;
+  } else if(t==='square'){
+    const start = 1 + Math.floor(Math.random()*4);
+    seq = [0,1,2,3].map(i=>Math.pow(start+i,2));
+    answer = Math.pow(start+4,2);
+    rule = 'consecutive squares';
+  } else {
+    let a=1,b=1; seq=[a,b];
+    for(let i=0;i<2;i++){ const c=a+b; seq.push(c); a=b; b=c; }
+    answer = seq[seq.length-1]+seq[seq.length-2];
+    rule = 'each term is the sum of the two before it';
+  }
+  return {seq, answer, rule};
+}
+
+function renderSequence(stage){
+  const puzzle = genSequence(session.round);
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">${puzzle.seq.join(',  ')},  ___</div>
+    <div class="q-sub">What comes next in the sequence?</div>
+    <div class="num-input-row"><input type="number" id="seqInput" inputmode="numeric" placeholder="Your answer"></div>
+    <button class="primary-btn" id="seqSubmit">Submit</button>`;
+  stage.appendChild(box);
+  document.getElementById('seqSubmit').addEventListener('click', ()=>{
+    const val = parseFloat(document.getElementById('seqInput').value);
+    const correct = val === puzzle.answer;
+    if(correct) session.score++;
+    const fb = document.createElement('div');
+    fb.className = 'q-sub';
+    fb.style.marginTop = '10px';
+    fb.style.color = correct ? '#5B8C7B' : '#B0616F';
+    fb.textContent = correct ? `Correct — rule: ${puzzle.rule}.` : `Not quite. Answer was ${puzzle.answer} (${puzzle.rule}).`;
+    box.appendChild(fb);
+    document.getElementById('seqSubmit').remove();
+    document.getElementById('seqInput').disabled = true;
+    const cont = document.createElement('button');
+    cont.className = 'primary-btn';
+    cont.textContent = session.round+1 >= currentModule.rounds ? 'See results' : 'Continue';
+    stage.appendChild(cont);
+    cont.addEventListener('click', nextRound);
+  });
+}
+
+/* ---------------- Spatial (mental rotation) ---------------- */
+
+function makeGridShape(seed){
+  // 3x3 grid, ~4 filled cells, asymmetric so rotation is distinguishable
+  const rand = mulberry32(seed);
+  let cells;
+  do{
+    cells = Array.from({length:9},()=> rand() > 0.55);
+  }while(cells.filter(Boolean).length < 3 || cells.filter(Boolean).length > 6);
+  return cells;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+function rotateGrid(cells, times){
+  let c = cells.slice();
+  for(let r=0;r<times;r++){
+    const n = [];
+    for(let row=0; row<3; row++) for(let col=0; col<3; col++){
+      n[row*3+col] = c[(2-col)*3+row];
+    }
+    c = n;
+  }
+  return c;
+}
+function gridSVG(cells, size){
+  const cell = size/3;
+  let sq = '';
+  for(let i=0;i<9;i++){
+    const row = Math.floor(i/3), col = i%3;
+    sq += `<rect x="${col*cell+2}" y="${row*cell+2}" width="${cell-4}" height="${cell-4}" rx="4" fill="${cells[i]?'#C9A227':'#232739'}" stroke="#2E3345"/>`;
+  }
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${sq}</svg>`;
+}
+
+function renderSpatial(stage){
+  const seed = Math.floor(Math.random()*100000)+session.round;
+  const base = makeGridShape(seed);
+  const targetRot = 1 + Math.floor(Math.random()*3); // 90/180/270
+  const correctShape = rotateGrid(base, targetRot);
+  const labels = ['90°','180°','270°'];
+  const rotLabel = labels[targetRot-1];
+
+  // build 4 options: 1 correct + 3 distractors (different rotations or seeds)
+  const opts = [correctShape];
+  const usedKeys = new Set([correctShape.join('')]);
+  while(opts.length < 4){
+    const distSeed = seed + opts.length*37 + 1;
+    let cand;
+    if(Math.random() < 0.5){
+      cand = rotateGrid(base, (targetRot + 1 + Math.floor(Math.random()*2))%4);
+    } else {
+      cand = makeGridShape(distSeed);
+    }
+    const key = cand.join('');
+    if(!usedKeys.has(key)){ usedKeys.add(key); opts.push(cand); }
+  }
+  // shuffle
+  for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+  const correctIdx = opts.findIndex(o=>o.join('')===correctShape.join(''));
+
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">Which shape below is this pattern rotated ${rotLabel}?</div>
+    <div style="display:flex; justify-content:center; margin:16px 0;">${gridSVG(base,120)}</div>
+    <div class="opts" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" id="spatialOpts"></div>`;
+  stage.appendChild(box);
+  const optWrap = box.querySelector('#spatialOpts');
+  opts.forEach((o,i)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.style.display = 'flex'; b.style.justifyContent='center'; b.style.padding='10px';
+    b.innerHTML = gridSVG(o, 84);
+    b.addEventListener('click', ()=>{
+      optWrap.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+      b.classList.add(i===correctIdx ? 'correct' : 'wrong');
+      if(i!==correctIdx) optWrap.children[correctIdx].classList.add('correct');
+      if(i===correctIdx) session.score++;
+      const cont = document.createElement('button');
+      cont.className = 'primary-btn';
+      cont.textContent = session.round+1 >= currentModule.rounds ? 'See results' : 'Continue';
+      stage.appendChild(cont);
+      cont.addEventListener('click', nextRound);
+    });
+    optWrap.appendChild(b);
+  });
+}
+
+/* ---------------- Rhythm (musical, Simon-says) ---------------- */
+
+let audioCtx = null;
+const PAD_FREQS = [261.6, 329.6, 392.0, 523.3]; // C E G C
+function playTone(freq, dur=280){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine'; osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur/1000);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(); osc.stop(audioCtx.currentTime + dur/1000);
+}
+
+function renderRhythm(stage){
+  let sequence = [];
+  let userIdx = 0;
+  let level = 0;
+  let playing = false;
+
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">Watch, listen, then repeat the pattern.</div>
+    <div class="q-sub" id="rhythmStatus">Level 1 · tap start when ready</div>
+    <div class="pads" id="pads">
+      ${[0,1,2,3].map(i=>`<button class="pad" data-p="${i}"></button>`).join('')}
+    </div>
+    <button class="primary-btn" id="rhythmStart">Start</button>`;
+  stage.appendChild(box);
+
+  const pads = box.querySelectorAll('.pad');
+  const statusEl = box.querySelector('#rhythmStatus');
+  const startBtn = box.querySelector('#rhythmStart');
+
+  function litPad(i, dur=380){
+    return new Promise(res=>{
+      pads[i].classList.add('lit');
+      playTone(PAD_FREQS[i], dur-60);
+      setTimeout(()=>{ pads[i].classList.remove('lit'); res(); }, dur);
+    });
+  }
+
+  async function playSequence(){
+    playing = true;
+    statusEl.textContent = `Level ${level+1} · watch closely`;
+    pads.forEach(p=>p.disabled=true);
+    await new Promise(r=>setTimeout(r,400));
+    for(const i of sequence){ await litPad(i); await new Promise(r=>setTimeout(r,120)); }
+    playing = false;
+    userIdx = 0;
+    statusEl.textContent = `Level ${level+1} · your turn`;
+    pads.forEach(p=>p.disabled=false);
+  }
+
+  function nextLevel(){
+    level++;
+    sequence.push(Math.floor(Math.random()*4));
+    playSequence();
+  }
+
+  startBtn.addEventListener('click', ()=>{
+    startBtn.remove();
+    sequence = [Math.floor(Math.random()*4)];
+    level = 0;
+    playSequence();
+  });
+
+  pads.forEach((pad,i)=>{
+    pad.disabled = true;
+    pad.addEventListener('click', ()=>{
+      if(playing) return;
+      litPad(i, 220);
+      if(i === sequence[userIdx]){
+        userIdx++;
+        if(userIdx === sequence.length){
+          session.score = level+1; // best level reached
+          if(level >= 6){ // cap difficulty, end session
+            statusEl.textContent = 'Excellent — max level reached.';
+            setTimeout(showResults, 700);
+          } else {
+            setTimeout(nextLevel, 500);
+          }
+        }
+      } else {
+        session.score = level+1;
+        statusEl.textContent = `Sequence broke at level ${level+1}.`;
+        pads.forEach(p=>p.disabled=true);
+        const cont = document.createElement('button');
+        cont.className = 'primary-btn';
+        cont.textContent = 'See results';
+        box.appendChild(cont);
+        cont.addEventListener('click', showResults);
+      }
+    });
+  });
+}
+
+/* ---------------- Reaction (kinesthetic) ---------------- */
+
+let rxTimers = [];
+function stopAllTimers(){ rxTimers.forEach(t=>clearTimeout(t)); rxTimers=[]; }
+
+function renderReaction(stage){
+  if(!session.times) session.times = [];
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">Tap the dot the instant it appears.</div>
+    <div class="q-sub">Round ${session.round+1} of ${currentModule.rounds}</div>
+    <div class="rx-zone" id="rxZone"><div class="rx-msg" id="rxMsg">Get ready…</div></div>`;
+  stage.appendChild(box);
+  const zone = document.getElementById('rxZone');
+  const msg = document.getElementById('rxMsg');
+  const delay = 800 + Math.random()*1800;
+  const t = setTimeout(()=>{
+    msg.remove();
+    const dot = document.createElement('div');
+    dot.className = 'rx-target';
+    const maxX = zone.clientWidth - 52, maxY = zone.clientHeight - 52;
+    dot.style.left = Math.floor(Math.random()*maxX)+'px';
+    dot.style.top = Math.floor(Math.random()*maxY)+'px';
+    const t0 = performance.now();
+    zone.appendChild(dot);
+    dot.addEventListener('click', ()=>{
+      const rt = Math.round(performance.now()-t0);
+      session.times.push(rt);
+      session.score = Math.round(session.times.reduce((a,b)=>a+b,0)/session.times.length);
+      dot.remove();
+      const fb = document.createElement('div');
+      fb.className = 'q-sub';
+      fb.style.marginTop = '12px';
+      fb.textContent = `${rt}ms`;
+      box.appendChild(fb);
+      const cont = document.createElement('button');
+      cont.className = 'primary-btn';
+      cont.textContent = session.round+1 >= currentModule.rounds ? 'See results' : 'Continue';
+      box.appendChild(cont);
+      cont.addEventListener('click', nextRound);
+    }, {once:true});
+  }, delay);
+  rxTimers.push(t);
+}
+
+/* ---------------- Reflect (intra/existential) ---------------- */
+
+function renderReflect(stage){
+  const pIdx = pickIndex(currentModule.prompts.length);
+  session.results.push({qIndex: pIdx});
+  const prompt = currentModule.prompts[pIdx];
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">${prompt}</div>
+    <div class="q-sub">Write freely — there's no scoring here, only the habit of asking.</div>
+    <textarea id="reflectInput" placeholder="Start writing…"></textarea>
+    <button class="primary-btn" id="reflectSubmit" disabled>Save reflection</button>`;
+  stage.appendChild(box);
+  const ta = document.getElementById('reflectInput');
+  const submitBtn = document.getElementById('reflectSubmit');
+  ta.addEventListener('input', ()=>{ submitBtn.disabled = ta.value.trim().split(/\s+/).filter(Boolean).length < 8; });
+  submitBtn.addEventListener('click', ()=>{
+    const words = ta.value.trim().split(/\s+/).filter(Boolean).length;
+    session.score = words;
+    ta.disabled = true; submitBtn.remove();
+    const fb = document.createElement('div');
+    fb.className = 'q-sub'; fb.style.marginTop='10px'; fb.style.color = '#5B8C7B';
+    fb.textContent = `Saved — ${words} words of reflection.`;
+    box.appendChild(fb);
+    const cont = document.createElement('button');
+    cont.className = 'primary-btn';
+    cont.textContent = 'See results';
+    box.appendChild(cont);
+    cont.addEventListener('click', showResults);
+  });
+}
+
+/* ---------------- Divergent (creative) ---------------- */
+
+function renderDivergent(stage){
+  const pIdx = pickIndex(currentModule.prompts.length);
+  session.results.push({qIndex: pIdx});
+  const prompt = currentModule.prompts[pIdx];
+  let seconds = 60;
+  let entries = [];
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.innerHTML = `<div class="q-text">${prompt}</div>
+    <div class="q-sub">Type an idea and press Enter to add it. Keep going until time runs out.</div>
+    <div class="timer-badge" id="timerBadge">60</div>
+    <input type="text" id="ideaInput" placeholder="Type an idea, then press Enter">
+    <div class="entry-list" id="entryList"></div>`;
+  stage.appendChild(box);
+  const input = document.getElementById('ideaInput');
+  const list = document.getElementById('entryList');
+  const timerBadge = document.getElementById('timerBadge');
+  input.focus();
+
+  const timer = setInterval(()=>{
+    seconds--;
+    timerBadge.textContent = seconds;
+    if(seconds <= 0){
+      clearInterval(timer);
+      input.disabled = true;
+      session.score = entries.length;
+      const cont = document.createElement('button');
+      cont.className = 'primary-btn';
+      cont.textContent = 'See results';
+      box.appendChild(cont);
+      cont.addEventListener('click', showResults);
+    }
+  }, 1000);
+  rxTimers.push(timer);
+
+  input.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' && input.value.trim()){
+      entries.push(input.value.trim());
+      const li = document.createElement('div');
+      li.className = 'entry';
+      li.textContent = input.value.trim();
+      list.prepend(li);
+      input.value = '';
+    }
+  });
+}
+
+/* ---------------- Results ---------------- */
+
+function showResults(){
+  stopAllTimers();
+  const stage = document.getElementById('exStage');
+  const beltBefore = computeBelt(currentModule.id).tier;
+  let scoreLabel = '', scoreVal = session.score, msg = '';
+  switch(currentModule.type){
+    case 'mcq':
+      scoreVal = `${session.score}/${currentModule.rounds}`;
+      scoreLabel = 'correct';
+      msg = session.score >= currentModule.rounds*0.8 ? 'Strong round. This is your kind of thinking.' : 'Good rep — the point is the practice, not the score.';
+      break;
+    case 'sequence':
+      scoreVal = `${session.score}/${currentModule.rounds}`;
+      scoreLabel = 'patterns solved';
+      msg = 'Pattern recognition sharpens with repetition — come back tomorrow.';
+      break;
+    case 'spatial':
+      scoreVal = `${session.score}/${currentModule.rounds}`;
+      scoreLabel = 'correct rotations';
+      msg = 'Mental rotation is trainable — most people improve noticeably within a week of daily reps.';
+      break;
+    case 'rhythm':
+      scoreVal = session.score;
+      scoreLabel = 'levels reached';
+      msg = 'Working memory for sequences transfers to a lot of unrelated skills — good rep.';
+      break;
+    case 'reaction':
+      scoreVal = `${session.score}ms`;
+      scoreLabel = 'average reaction time';
+      msg = session.score < 400 ? 'Fast — that\'s a well-tuned reflex.' : 'Reaction speed responds well to consistent short practice.';
+      break;
+    case 'reflect':
+      scoreVal = session.score;
+      scoreLabel = 'words written';
+      msg = 'There\'s no score that matters here — only whether you were honest with yourself.';
+      break;
+    case 'divergent':
+      scoreVal = session.score;
+      scoreLabel = 'distinct ideas';
+      msg = session.score >= 10 ? 'That\'s a strong divergent-thinking output.' : 'Fluency builds with repetition — try this module again in a few days.';
+      break;
+  }
+  recordCompletion(currentModule.id, typeof session.score==='number'?session.score:0);
+  const beltAfter = computeBelt(currentModule.id);
+  const leveledUp = beltAfter.tier !== beltBefore && ['White','Yellow','Green','Black'].indexOf(beltAfter.tier) > ['White','Yellow','Green','Black'].indexOf(beltBefore);
+
+  const q = QUOTES[currentModule.id];
+  const stage2 = stage;
+  stage2.innerHTML = `<div class="result-box">
+    <div class="result-label">Session complete</div>
+    ${leveledUp ? `<div class="belt-badge" style="border-color:${beltAfter.color}; color:${beltAfter.color}; margin:8px auto; display:inline-block;">Belt up — now ${beltAfter.tier}</div>` : ''}
+    <div class="result-score">${scoreVal}</div>
+    <div class="result-label">${scoreLabel}</div>
+    <div class="result-msg">${msg}</div>
+    <div class="result-quote">"${q.text}"<cite>${q.by}</cite></div>
+    <div class="session-note">
+      <div class="session-note-label">Quick note (optional)</div>
+      <textarea id="sessionNoteInput" placeholder="What felt different this time?"></textarea>
+      <button class="ghost-btn" id="noteSkip">Skip</button>
+    </div>
+    <button class="primary-btn" id="doneBtn">Back to modules</button>
+    <button class="ghost-btn" id="againBtn">Train this again</button>
+  </div>`;
+  document.getElementById('doneBtn').addEventListener('click', goHome);
+  document.getElementById('againBtn').addEventListener('click', ()=>startModule(currentModule.id));
+  document.getElementById('noteSkip').addEventListener('click', ()=>{
+    const note = document.getElementById('sessionNoteInput').value.trim();
+    if(note){
+      if(!PROGRESS._sessionLog) PROGRESS._sessionLog = [];
+      PROGRESS._sessionLog.push({moduleId: currentModule.id, note, at: todayStr()});
+      PROGRESS._sessionLog = PROGRESS._sessionLog.slice(-100);
+      saveProgress();
+    }
+    document.getElementById('sessionNoteInput').disabled = true;
+    document.getElementById('noteSkip').textContent = note ? 'Saved' : 'Skipped';
+    document.getElementById('noteSkip').disabled = true;
+  });
+}
+
+/* ---------------- Boot + PWA install ---------------- */
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+(async function boot(){
+  await loadProgress();
+  renderHome();
+})();
+</script>
+</body>
+</html>

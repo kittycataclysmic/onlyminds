@@ -1,0 +1,25 @@
+{
+  "name": "OnlyMinds — Train Every Kind of Intelligence",
+  "short_name": "OnlyMinds",
+  "description": "A free cognitive training ground covering every recognized form of intelligence — logic, language, emotion, resilience, and more.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12141C",
+  "theme_color": "#12141C",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
