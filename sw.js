@@ -1,4 +1,4 @@
-const CACHE_NAME = 'onlyminds-v1';
+const CACHE_NAME = 'onlyminds-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -24,6 +24,26 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+
+  const isHTML = event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') || '').includes('text/html');
+
+  if (isHTML) {
+    // Network-first for the app shell: always get the latest code when online,
+    // so updates apply on the very next open instead of requiring a double reload.
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-first for static assets (manifest, icon) — these rarely change.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const fetchPromise = fetch(event.request)
