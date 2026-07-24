@@ -1952,6 +1952,8 @@ function renderRhythm(stage){
   }
 
   startBtn.addEventListener('click', ()=>{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
     startBtn.remove();
     sequence = [Math.floor(Math.random()*4)];
     level = 0;
@@ -1961,6 +1963,7 @@ function renderRhythm(stage){
   pads.forEach((pad,i)=>{
     pad.disabled = true;
     pad.addEventListener('click', ()=>{
+      if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
       if(playing) return;
       litPad(i, 220);
       if(i === sequence[userIdx]){
