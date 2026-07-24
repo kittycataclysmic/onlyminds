@@ -1400,14 +1400,14 @@ const MODULES = [
 
 async function loadProgress(){
   try{
-    const res = await window.storage.get(STORAGE_KEY, false);
-    if(res && res.value) PROGRESS = JSON.parse(res.value);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) PROGRESS = JSON.parse(raw);
   }catch(e){ PROGRESS = {}; }
   computeStreak();
 }
 
 async function saveProgress(){
-  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(PROGRESS), false); }catch(e){}
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(PROGRESS)); }catch(e){}
 }
 
 function todayStr(){ return new Date().toISOString().slice(0,10); }
