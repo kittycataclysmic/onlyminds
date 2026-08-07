@@ -1525,10 +1525,11 @@ function computeStreak(){
 
 function renderDayTracker(){
   const meta = getMeta();
-  const dayIdx = Math.max(0, daysBetween(meta.startDate, todayStr())); // 0-based, uncapped
-  const dayNumDisplay = Math.min(30, dayIdx + 1);
+  const dayIdx = Math.max(0, daysBetween(meta.startDate, todayStr())); // 0-based calendar days elapsed — used only for the dot grid position + focus rotation
+  const activeCount = meta.activeDates.length;
+  const dayNumDisplay = activeCount > 0 ? Math.min(30, activeCount) : 1;
   document.getElementById('dayNum').textContent = dayNumDisplay;
-  document.getElementById('dayCaption').textContent = dayIdx >= 30
+  document.getElementById('dayCaption').textContent = activeCount >= 30
     ? 'Past day 30 — the habit is built. Keep the streak alive.'
     : '21 days builds a habit. 30 locks it in.';
 
