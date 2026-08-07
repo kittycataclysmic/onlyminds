@@ -1711,17 +1711,23 @@ function runRound(){
 function renderMCQ(stage){
   const idx = pickIndex(currentModule.bank.length);
   const item = currentModule.bank[idx];
+  // Shuffle option order at render time — source data always lists the correct
+  // answer first for authoring clarity, so this must be randomized per display.
+  const order = [0,1,2,3];
+  for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  const shuffledOpts = order.map(i=>item.opts[i]);
+  const correctShuffledIdx = order.indexOf(item.a);
   const box = document.createElement('div');
   box.className = 'q-box';
   box.innerHTML = `<div class="q-text">${item.q}</div>
-    <div class="opts">${item.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div>`;
+    <div class="opts">${shuffledOpts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div>`;
   stage.appendChild(box);
   const btns = box.querySelectorAll('.opt');
   btns.forEach(b=>{
     b.addEventListener('click', ()=>{
       btns.forEach(x=>x.disabled=true);
       const chosen = parseInt(b.dataset.i);
-      const correct = item.a;
+      const correct = correctShuffledIdx;
       b.classList.add(chosen===correct ? 'correct' : 'wrong');
       if(chosen!==correct) btns[correct].classList.add('correct');
       if(chosen===correct) session.score++;
@@ -1760,7 +1766,9 @@ function genSequence(difficulty){
     answer = Math.pow(start+4,2);
     rule = 'consecutive squares';
   } else {
-    let a=1,b=1; seq=[a,b];
+    let a = 1 + Math.floor(Math.random()*4);
+    let b = a + 1 + Math.floor(Math.random()*3);
+    seq=[a,b];
     for(let i=0;i<2;i++){ const c=a+b; seq.push(c); a=b; b=c; }
     answer = seq[seq.length-1]+seq[seq.length-2];
     rule = 'each term is the sum of the two before it';
@@ -1777,8 +1785,9 @@ function renderSequence(stage){
     <div class="num-input-row"><input type="number" id="seqInput" inputmode="numeric" placeholder="Your answer"></div>
     <button class="primary-btn" id="seqSubmit">Submit</button>`;
   stage.appendChild(box);
-  document.getElementById('seqSubmit').addEventListener('click', ()=>{
-    const val = parseFloat(document.getElementById('seqInput').value);
+  const seqInput = document.getElementById('seqInput');
+  const submitAnswer = () => {
+    const val = parseFloat(seqInput.value);
     const correct = val === puzzle.answer;
     if(correct) session.score++;
     const fb = document.createElement('div');
@@ -1788,13 +1797,18 @@ function renderSequence(stage){
     fb.textContent = correct ? `Correct — rule: ${puzzle.rule}.` : `Not quite. Answer was ${puzzle.answer} (${puzzle.rule}).`;
     box.appendChild(fb);
     document.getElementById('seqSubmit').remove();
-    document.getElementById('seqInput').disabled = true;
+    seqInput.disabled = true;
     const cont = document.createElement('button');
     cont.className = 'primary-btn';
     cont.textContent = session.round+1 >= currentModule.rounds ? 'See results' : 'Continue';
     stage.appendChild(cont);
     cont.addEventListener('click', nextRound);
+  };
+  document.getElementById('seqSubmit').addEventListener('click', submitAnswer);
+  seqInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){ e.preventDefault(); submitAnswer(); }
   });
+  seqInput.focus();
 }
 
 /* ---------------- Spatial (mental rotation) ---------------- */
