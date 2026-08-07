@@ -1363,20 +1363,110 @@ const DAILY_PROMPTS = [
 ];
 
 const QUOTES = {
-  linguistic: {text:"The limits of my language mean the limits of my world.", by:"Ludwig Wittgenstein"},
-  logical: {text:"I think, therefore I am.", by:"René Descartes"},
-  spatial: {text:"Let no one ignorant of geometry enter.", by:"Inscribed at Plato's Academy"},
-  musical: {text:"Without music, life would be a mistake.", by:"Friedrich Nietzsche"},
-  kinesthetic: {text:"A sound mind in a sound body.", by:"Juvenal"},
-  interpersonal: {text:"Man is by nature a social animal.", by:"Aristotle"},
-  intrapersonal: {text:"The unexamined life is not worth living.", by:"Socrates, via Plato"},
-  naturalistic: {text:"No man ever steps in the same river twice.", by:"Heraclitus"},
-  existential: {text:"You have power over your mind, not outside events.", by:"Marcus Aurelius"},
-  creative: {text:"To exist is to go on creating oneself endlessly.", by:"Henri Bergson"},
-  practical: {text:"I hear and I forget. I do and I understand.", by:"Attributed to Confucius"},
-  eq: {text:"Men are disturbed not by things, but by their view of them.", by:"Epictetus"},
-  aq: {text:"That which does not kill us makes us stronger.", by:"Friedrich Nietzsche"}
+  linguistic: [
+    {text:"The limits of my language mean the limits of my world.", by:"Ludwig Wittgenstein"},
+    {text:"Language is the dress of thought.", by:"Samuel Johnson"},
+    {text:"He who does not know foreign languages knows nothing of his own.", by:"Johann Wolfgang von Goethe"},
+    {text:"Without knowing the force of words, it is impossible to know men.", by:"Confucius"},
+    {text:"Language is the amber in which a thousand precious thoughts are embedded.", by:"Ralph Waldo Emerson"}
+  ],
+  logical: [
+    {text:"I think, therefore I am.", by:"René Descartes"},
+    {text:"Number is the ruler of forms and ideas.", by:"Attributed to Pythagoras"},
+    {text:"Mathematics is the language with which God has written the universe.", by:"Galileo Galilei"},
+    {text:"God ever geometrizes.", by:"Attributed to Plato"},
+    {text:"It is the mark of an educated mind to entertain a thought without accepting it.", by:"Aristotle"}
+  ],
+  spatial: [
+    {text:"Let no one ignorant of geometry enter.", by:"Inscribed at Plato's Academy"},
+    {text:"There is no royal road to geometry.", by:"Attributed to Euclid"},
+    {text:"Geometry is knowledge of the eternally existent.", by:"Pythagorean tradition, via Plutarch"},
+    {text:"Study the science of art. Study the art of science.", by:"Leonardo da Vinci"},
+    {text:"Geometry is one and eternal, a reflection of the mind of God.", by:"Johannes Kepler"}
+  ],
+  musical: [
+    {text:"Without music, life would be a mistake.", by:"Friedrich Nietzsche"},
+    {text:"Music is the pleasure the human mind feels from counting without knowing it.", by:"Gottfried Wilhelm Leibniz"},
+    {text:"Music produces a pleasure which human nature cannot do without.", by:"Confucius"},
+    {text:"Music gives soul to the universe, wings to the mind, flight to the imagination.", by:"Attributed to Plato"},
+    {text:"Music is a higher revelation than all wisdom and philosophy.", by:"Ludwig van Beethoven"}
+  ],
+  kinesthetic: [
+    {text:"A sound mind in a sound body.", by:"Juvenal"},
+    {text:"Lack of activity destroys the good condition of every human being.", by:"Attributed to Plato"},
+    {text:"Walking is man's best medicine.", by:"Attributed to Hippocrates"},
+    {text:"A sound mind in a sound body is a short but full description of a happy state.", by:"John Locke"},
+    {text:"Not less than two hours a day should be devoted to exercise.", by:"Thomas Jefferson"}
+  ],
+  interpersonal: [
+    {text:"Man is by nature a social animal.", by:"Aristotle"},
+    {text:"We were born to work together, like feet, hands, and eyes.", by:"Marcus Aurelius"},
+    {text:"In poverty and other misfortunes of life, true friends are a sure refuge.", by:"Aristotle"},
+    {text:"Friendship improves happiness and abates misery, by doubling our joy and dividing our grief.", by:"Cicero"},
+    {text:"Have no friends not equal to yourself.", by:"Confucius"}
+  ],
+  intrapersonal: [
+    {text:"The unexamined life is not worth living.", by:"Socrates, via Plato"},
+    {text:"Knowing others is wisdom; knowing yourself is enlightenment.", by:"Lao Tzu"},
+    {text:"Look within. Within is the fountain of good.", by:"Marcus Aurelius"},
+    {text:"We suffer more often in imagination than in reality.", by:"Seneca"},
+    {text:"Knowing yourself is the beginning of all wisdom.", by:"Attributed to Aristotle"}
+  ],
+  naturalistic: [
+    {text:"No man ever steps in the same river twice.", by:"Heraclitus"},
+    {text:"Nature does not hurry, yet everything is accomplished.", by:"Lao Tzu"},
+    {text:"In all things of nature there is something of the marvelous.", by:"Aristotle"},
+    {text:"Nature loves nothing so much as to alter what exists and create new things.", by:"Marcus Aurelius"},
+    {text:"If you have a garden and a library, you have everything you need.", by:"Cicero"}
+  ],
+  existential: [
+    {text:"You have power over your mind, not outside events.", by:"Marcus Aurelius"},
+    {text:"It is not that we have a short time to live, but that we waste a lot of it.", by:"Seneca"},
+    {text:"It's not what happens to you, but how you react to it that matters.", by:"Epictetus"},
+    {text:"Character is destiny.", by:"Attributed to Heraclitus"},
+    {text:"Waste no more time arguing about what a good man should be. Be one.", by:"Marcus Aurelius"}
+  ],
+  creative: [
+    {text:"To exist is to go on creating oneself endlessly.", by:"Henri Bergson"},
+    {text:"Poetry is finer and more philosophical than history.", by:"Aristotle"},
+    {text:"One must still have chaos in oneself to give birth to a dancing star.", by:"Friedrich Nietzsche"},
+    {text:"Imagination is more important than knowledge.", by:"Albert Einstein"},
+    {text:"Originality is nothing but judicious imitation.", by:"Voltaire"}
+  ],
+  practical: [
+    {text:"I hear and I forget. I do and I understand.", by:"Attributed to Confucius"},
+    {text:"The impediment to action advances action. What stands in the way becomes the way.", by:"Marcus Aurelius"},
+    {text:"Knowledge is power.", by:"Francis Bacon"},
+    {text:"In the midst of chaos, there is also opportunity.", by:"Sun Tzu"},
+    {text:"First say to yourself what you would be, and then do what you have to do.", by:"Epictetus"}
+  ],
+  eq: [
+    {text:"Men are disturbed not by things, but by their view of them.", by:"Epictetus"},
+    {text:"To be angry with the right person, at the right time, is not easy.", by:"Aristotle"},
+    {text:"How much more grievous are the consequences of anger than the causes of it.", by:"Marcus Aurelius"},
+    {text:"He who conquers himself is the mightiest warrior.", by:"Lao Tzu"},
+    {text:"No man is free who is not master of himself.", by:"Epictetus"}
+  ],
+  aq: [
+    {text:"That which does not kill us makes us stronger.", by:"Friedrich Nietzsche"},
+    {text:"Our greatest glory is not in never falling, but in rising every time we fall.", by:"Attributed to Confucius"},
+    {text:"Difficulties strengthen the mind as labor does the body.", by:"Seneca"},
+    {text:"Adversity has the effect of eliciting talents which in prosperous circumstances would have lain dormant.", by:"Horace"},
+    {text:"Accept the things to which fate binds you, and love the people fate brings you together with.", by:"Marcus Aurelius"}
+  ]
 };
+
+const lastQuoteShown = {}; // in-memory only — avoids repeating the same quote twice in a row per module
+
+function pickQuote(moduleId){
+  const arr = QUOTES[moduleId];
+  if(!arr || arr.length === 0) return {text:'', by:''};
+  if(arr.length === 1) return arr[0];
+  let idx;
+  do{ idx = Math.floor(Math.random()*arr.length); } while(idx === lastQuoteShown[moduleId]);
+  lastQuoteShown[moduleId] = idx;
+  return arr[idx];
+}
 
 /* ---------------- Module definitions ---------------- */
 
@@ -1598,6 +1688,7 @@ function renderHome(){
   MODULES.forEach(m=>{
     const p = PROGRESS[m.id] || {plays:0, best:0};
     const belt = computeBelt(m.id);
+    const q = pickQuote(m.id);
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
@@ -1610,7 +1701,7 @@ function renderHome(){
         <div class="card-tag">${m.tag}</div>
       </div>
       <div class="card-desc">${m.desc}</div>
-      <div class="card-quote">"${QUOTES[m.id].text}"<cite>— ${QUOTES[m.id].by}</cite></div>
+      <div class="card-quote">"${q.text}"<cite>— ${q.by}</cite></div>
       <div class="card-foot">
         <div class="belt-badge" style="border-color:${belt.color}; color:${belt.color}">${belt.tier} Belt</div>
         <div class="card-progress">${p.plays||0} session${p.plays===1?'':'s'}</div>
@@ -2180,7 +2271,7 @@ function showResults(){
   const beltAfter = computeBelt(currentModule.id);
   const leveledUp = beltAfter.tier !== beltBefore && ['White','Yellow','Green','Black'].indexOf(beltAfter.tier) > ['White','Yellow','Green','Black'].indexOf(beltBefore);
 
-  const q = QUOTES[currentModule.id];
+  const q = pickQuote(currentModule.id);
   const stage2 = stage;
   stage2.innerHTML = `<div class="result-box">
     <div class="result-label">Session complete</div>
